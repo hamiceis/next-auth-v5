@@ -22,6 +22,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { newPassword } from "@/actions/new-password";
 
+//Formulário para nova senha 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
