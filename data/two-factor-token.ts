@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 
+//Busca no banco de dados um Token existente 2FA
 export const getTwoFactorTokenByToken = async (token: string) => {
   try {
     const twoFactorToken = await db.twoFactorToken.findUnique({
@@ -12,6 +13,7 @@ export const getTwoFactorTokenByToken = async (token: string) => {
   }
 };
 
+//Busca no banco de dados o Token de 2FA
 export const getTwoFactorTokenByEmail = async (email: string) => {
   try {
     const twoFactorToken = await db.twoFactorToken.findFirst({

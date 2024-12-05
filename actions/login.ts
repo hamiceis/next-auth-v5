@@ -56,26 +56,32 @@ export const login = async (
     return { success: "Confirmation email sent!" };
   }
 
+  //verifica se autenticação de 2 fatores está habilitada e e-mail do usuário
   if (existingUser.isTwoFactorEnabled && existingUser.email) {
+    //verificação se existe um código de validação 
     if (code) {
       const twoFactorToken = await getTwoFactorTokenByEmail(
         existingUser.email
       );
 
+      //verifica existe um token de 2FA
       if (!twoFactorToken) {
         return { error: "Invalid code!" };
       }
 
+      // Verifica se o Token e codígo se coincidem 
       if (twoFactorToken.token !== code) {
         return { error: "Invalid code!" };
       }
 
       const hasExpired = new Date(twoFactorToken.expires) < new Date();
 
+      // verifica se o token ainda é válido pelo tempo de criação
       if (hasExpired) {
         return { error: "Code expired!" };
       }
 
+      //deleta o token 2FA do banco de dados
       await db.twoFactorToken.delete({
         where: { id: twoFactorToken.id }
       });
@@ -83,19 +89,21 @@ export const login = async (
       const existingConfirmation = await getTwoFactorConfirmationByUserId(
         existingUser.id
       );
-
+      //verifica se existe uma confirmation e deleta do banco de dados
       if (existingConfirmation) {
         await db.twoFactorConfirmation.delete({
           where: { id: existingConfirmation.id }
         });
       }
 
+      //cria uma nova confirmação 2FA
       await db.twoFactorConfirmation.create({
         data: {
           userId: existingUser.id,
         }
       });
     } else {
+      //caso contrário gera um novo token de 2FA e envia por e-mail
       const twoFactorToken = await generateTwoFactorToken(existingUser.email)
       await sendTwoFactorTokenEmail(
         twoFactorToken.email,
