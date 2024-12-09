@@ -11,6 +11,7 @@ import { currentUser } from "@/lib/auth";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
 
+//Atualiza os dados do usuário  
 export const settings = async (
   values: z.infer<typeof SettingsSchema>
 ) => {

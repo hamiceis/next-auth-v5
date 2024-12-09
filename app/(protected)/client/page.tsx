@@ -3,6 +3,7 @@
 import { UserInfo } from "@/components/user-info";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
+//página de client 
 const ClientPage = () => {
   const user = useCurrentUser();
 

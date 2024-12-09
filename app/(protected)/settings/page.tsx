@@ -37,6 +37,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { UserRole } from "@prisma/client";
 
+//Página de settings
 const SettingsPage = () => {
   const user = useCurrentUser();
 
